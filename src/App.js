@@ -65,12 +65,14 @@ const App = () => {
       setErrorType("success")
       setTimeout(() => {
         setErrorMessage(null)
+        setErrorType(null)
       }, 5000)
     } catch (exception) {
       setErrorMessage(exception.message)
       setErrorType("error")
       setTimeout(() => {
         setErrorMessage(null)
+        setErrorType(null)
       }, 5000)
     }
   }
@@ -78,19 +80,21 @@ const App = () => {
   const updateBlog = async(id, updateObject) => {
     try {
       const updatedBlog = await blogService.update(id, updateObject)
-      console.log(`id is ${id} and updatedBlog.id is ${updatedBlog.id}`)
+      // console.log(`id is ${id} and updatedBlog.id is ${updatedBlog.id}`)
       console.log(updatedBlog)
       setBlogs(blogs.map((blog) => blog.id !== updatedBlog.id ? blog : updatedBlog))
       setErrorMessage("Blog updated successfully")
       setErrorType("success")
       setTimeout(() => {
         setErrorMessage(null)
+        setErrorType(null)
       }, 5000)
     } catch (exception) {
       setErrorMessage(exception.message)
       setErrorType("error")
       setTimeout(() => {
         setErrorMessage(null)
+        setErrorType(null)
       }, 5000)
     }
   }
