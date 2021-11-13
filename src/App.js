@@ -77,12 +77,13 @@ const App = () => {
     }
   }
 
-  const updateBlog = async(id, updateObject) => {
+  const updateBlog = async(updateObject) => {
     try {
-      const updatedBlog = await blogService.update(id, updateObject)
+      const updatedBlog = await blogService.update(updateObject)
       // console.log(`id is ${id} and updatedBlog.id is ${updatedBlog.id}`)
       console.log(updatedBlog)
-      setBlogs(blogs.map((blog) => blog.id !== updatedBlog.id ? blog : updatedBlog))
+      const updatedBlogs = blogs.map((blog) => blog.id !== updatedBlog.id ? blog : updatedBlog)
+      setBlogs(updatedBlogs)
       setErrorMessage("Blog updated successfully")
       setErrorType("success")
       setTimeout(() => {

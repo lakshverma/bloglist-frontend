@@ -21,15 +21,9 @@ const Blog = ({ blog, updateBlog }) => {
     // Although there are checks on backend, this is to ensure the app doesn't crash if there is no user.
     blog.user = blog.user ? blog.user : "none";
 
-    const addLikes = async () => {
-      let updatedLikes = blog.likes + 1;
-      updateBlog(blog.id, {
-        user: blog.user.username,
-        likes: updatedLikes,
-        author: blog.author,
-        title: blog.title,
-        url: blog.url,
-      });
+    const handleUpdates = async (updates) => {
+      // let updatedLikes = blog.likes + 1;
+      updateBlog({...blog, ...updates});
     };
 
     return (
@@ -40,7 +34,7 @@ const Blog = ({ blog, updateBlog }) => {
         </div>
         <div>{blog.url}</div>
         <div>
-          likes {blog.likes} <button onClick={addLikes}>like</button>
+          likes {blog.likes} <button onClick={() => handleUpdates({ likes: blog.likes + 1 }) }>like</button>
         </div>
         {/* Make sure to remove any test data from the db without user data or else  */}
         <div>{blog.user.name}</div>
