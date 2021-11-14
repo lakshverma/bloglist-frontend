@@ -80,6 +80,7 @@ const App = () => {
     const updatedBlog = {...blogToUpdate, likes: blogToUpdate.likes + 1}
     // console.log({updatedBlog});
 
+<<<<<<< HEAD
     try {
       const updatedBlogResponse = await blogService.update(updatedBlog);
       // console.log({updatedBlogResponse})
@@ -90,6 +91,17 @@ const App = () => {
       setBlogs(updatedBlogs);
       setErrorMessage("Blog updated successfully");
       setErrorType("success");
+=======
+  const updateBlog = async(updateObject) => {
+    try {
+      const updatedBlog = await blogService.update(updateObject)
+      // console.log(`id is ${id} and updatedBlog.id is ${updatedBlog.id}`)
+      console.log(updatedBlog)
+      const updatedBlogs = blogs.map((blog) => blog.id !== updatedBlog.id ? blog : updatedBlog)
+      setBlogs(updatedBlogs)
+      setErrorMessage("Blog updated successfully")
+      setErrorType("success")
+>>>>>>> 0f731474173c03e1d93c180dbf46c2771f76049b
       setTimeout(() => {
         setErrorMessage(null);
         setErrorType(null);
