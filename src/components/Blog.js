@@ -30,7 +30,7 @@ const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
     blog.user = blog.user ? blog.user : 'none';
     // console.log("name of the blog's user before return: ", blog.user.name)
     return (
-      <div style={(showWhenVisible, blogStyle)}>
+      <div style={(showWhenVisible, blogStyle)} className="fullBlog">
         <div>
           {blog.title}
           {' '}
