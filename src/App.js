@@ -24,7 +24,10 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService.getAll().then((blogs) => {
+      blogs.sort((a, b) => b.likes - a.likes);
+      setBlogs(blogs);
+    });
     console.log("get all effect hook run successfully");
   }, [user]);
 
@@ -75,44 +78,60 @@ const App = () => {
   };
 
   const handleUpdateBlog = async (blogToUpdate) => {
-    // console.log({blogToUpdate});
+    console.log({ blogToUpdate });
 
-    const updatedBlog = {...blogToUpdate, likes: blogToUpdate.likes + 1}
-    // console.log({updatedBlog});
+    const updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 };
+    console.log({ updatedBlog });
 
-<<<<<<< HEAD
     try {
       const updatedBlogResponse = await blogService.update(updatedBlog);
-      // console.log({updatedBlogResponse})
-      
+      console.log({ updatedBlogResponse });
+
       const updatedBlogs = blogs.map((blog) =>
         blog.id !== updatedBlog.id ? blog : updatedBlogResponse
       );
       setBlogs(updatedBlogs);
       setErrorMessage("Blog updated successfully");
       setErrorType("success");
-=======
-  const updateBlog = async(updateObject) => {
-    try {
-      const updatedBlog = await blogService.update(updateObject)
-      // console.log(`id is ${id} and updatedBlog.id is ${updatedBlog.id}`)
-      console.log(updatedBlog)
-      const updatedBlogs = blogs.map((blog) => blog.id !== updatedBlog.id ? blog : updatedBlog)
-      setBlogs(updatedBlogs)
-      setErrorMessage("Blog updated successfully")
-      setErrorType("success")
->>>>>>> 0f731474173c03e1d93c180dbf46c2771f76049b
       setTimeout(() => {
         setErrorMessage(null);
         setErrorType(null);
       }, 5000);
     } catch (exception) {
-        setErrorMessage(exception.message);
-        setErrorType("error");
+      setErrorMessage(exception.message);
+      setErrorType("error");
+      setTimeout(() => {
+        setErrorMessage(null);
+        setErrorType(null);
+      }, 5000);
+    }
+  };
+
+  const handleDeleteBlog = async (blogToDelete) => {
+    console.log({ blogToDelete });
+
+    try {
+      if (window.confirm(`Delete ${blogToDelete.title} ?`)) {
+        await blogService.deleteBlog(blogToDelete);
+
+        const updatedBlogs = blogs.filter(
+          (blog) => blog.id !== blogToDelete.id
+        );
+        setBlogs(updatedBlogs);
+        setErrorMessage(`${blogToDelete.title} was deleted successfully.`);
+        setErrorType("success");
         setTimeout(() => {
           setErrorMessage(null);
           setErrorType(null);
         }, 5000);
+      }
+    } catch (exception) {
+      setErrorMessage(exception.message);
+      setErrorType("error");
+      setTimeout(() => {
+        setErrorMessage(null);
+        setErrorType(null);
+      }, 5000);
     }
   };
 
@@ -146,8 +165,14 @@ const App = () => {
             <BlogForm createBlog={createBlog} />
           </Togglable>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} handleUpdateBlog={handleUpdateBlog} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleUpdateBlog={handleUpdateBlog}
+              handleDeleteBlog={handleDeleteBlog}
+            />
           ))}
+          {/* {blogs.map((blog) => console.log("blog user inside App.js: ", blog.user))} */}
         </div>
       )}
     </div>
