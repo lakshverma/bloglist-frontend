@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-filename-extension */
+import React, { useState } from 'react';
 
 const BlogForm = ({ createBlog }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
 
   const controlTitle = (event) => setTitle(event.target.value);
   const controlAuthor = (event) => setAuthor(event.target.value);
@@ -12,13 +15,13 @@ const BlogForm = ({ createBlog }) => {
   const addBlog = (event) => {
     event.preventDefault();
     createBlog({
-      title: title,
-      author: author,
-      url: url,
+      title,
+      author,
+      url,
     });
-    setTitle("");
-    setAuthor("");
-    setUrl("");
+    setTitle('');
+    setAuthor('');
+    setUrl('');
   };
 
   return (
@@ -26,33 +29,40 @@ const BlogForm = ({ createBlog }) => {
       <div>
         <h2> create new </h2>
         <div>
-          {" "}
-          title{" "}
+          {' '}
+          title
+          {' '}
           <input
             type="text"
             value={title}
             name="title"
             onChange={controlTitle}
-          />{" "}
+          />
+          {' '}
         </div>
         <div>
-          {" "}
-          author{" "}
+          {' '}
+          author
+          {' '}
           <input
             type="text"
             value={author}
             name="author"
             onChange={controlAuthor}
-          />{" "}
+          />
+          {' '}
         </div>
         <div>
-          {" "}
-          url <input
+          {' '}
+          url
+          {' '}
+          <input
             type="text"
             value={url}
             name="url"
             onChange={controlUrl}
-          />{" "}
+          />
+          {' '}
         </div>
       </div>
       <button type="submit">create</button>
