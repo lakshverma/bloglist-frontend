@@ -2,7 +2,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { render, fireEvent } from '@testing-library/react';
-import { prettyDOM } from '@testing-library/dom';
+// import { prettyDOM } from '@testing-library/dom';
 import Blog from './Blog';
 
 test("renders the blog's title and author but ", () => {
@@ -80,7 +80,7 @@ test('if like button is clicked twice, event handler the component received as p
   fireEvent.click(button);
 
   const likeButton = component.getByText('like');
-  console.log(prettyDOM(likeButton));
+  // console.log(prettyDOM(likeButton));
   fireEvent.click(likeButton);
   fireEvent.click(likeButton);
 

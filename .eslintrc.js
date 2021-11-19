@@ -1,6 +1,11 @@
 module.exports = {
-  extends: ['airbnb'],
-  env: {
-    browser: true,
+  "env": {
+    "browser": true,
+    "jest/globals": true,
+    "cypress/globals": true,
   },
+  "extends": ["airbnb"],
+  "plugins": [
+    "react", "jest", "cyprus"
+  ]
 };

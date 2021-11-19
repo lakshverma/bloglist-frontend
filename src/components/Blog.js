@@ -39,13 +39,13 @@ const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
           <button onClick={toggleVisibility}>hide</button>
         </div>
         <div>{blog.url}</div>
-        <div>
+        <div className="blog-likes">
           {/* Pass the single blog object to handleUpdateBlog to update likes  */}
           likes
           {' '}
           {blog.likes}
           {' '}
-          <button onClick={() => handleUpdateBlog(blog)}>like</button>
+          <button className="blog-like-button" onClick={() => handleUpdateBlog(blog)}>like</button>
         </div>
         {/* Make sure to remove any test data from the db without user data
         or else this would break  */}
@@ -53,7 +53,7 @@ const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
         <div>{blog.user.name}</div>
         <div>
           {' '}
-          <button onClick={() => handleDeleteBlog(blog)}> remove </button>
+          <button className="blog-remove-button" onClick={() => handleDeleteBlog(blog)}> remove </button>
           {' '}
         </div>
       </div>
@@ -65,7 +65,7 @@ const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
       {' '}
       {blog.author}
       {' '}
-      <button onClick={toggleVisibility}>view</button>
+      <button className="view-full-blog" onClick={toggleVisibility}>view</button>
     </div>
   );
 };
