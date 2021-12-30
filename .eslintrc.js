@@ -6,6 +6,7 @@ module.exports = {
   },
   "extends": ["airbnb"],
   "plugins": [
-    "react", "jest", "cyprus"
-  ]
-};
+    "react", "jest", "cypress"
+  ],
+  "rules": {"import/no-extraneous-dependencies": ["error", { "devDependencies": true }]}
+  };

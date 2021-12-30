@@ -3,20 +3,23 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/function-component-definition */
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Login from './components/Login';
 import Blog from './components/Blog';
 import BlogForm from './components/BlogForm';
 import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import { setNotification } from './reducer/notificationReducer';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [errorType, setErrorType] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+
+  const notifications = useSelector((state) => state.notifications);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
@@ -54,12 +57,7 @@ const App = () => {
       setPassword('');
       // console.log('Login successful!');
     } catch (exception) {
-      setErrorMessage('Wrong credentials');
-      setErrorType('error');
-      setTimeout(() => {
-        setErrorMessage(null);
-        setErrorType(null);
-      }, 5000);
+      dispatch(setNotification('Wrong credentials', 'error', 5));
     }
   };
 
@@ -67,19 +65,9 @@ const App = () => {
     try {
       const newBlog = await blogService.create(blogObject);
       setBlogs(blogs.concat(newBlog));
-      setErrorMessage('New Blog added successfully!');
-      setErrorType('success');
-      setTimeout(() => {
-        setErrorMessage(null);
-        setErrorType(null);
-      }, 5000);
+      dispatch(setNotification('New Blog added successfully!', 'success', 5));
     } catch (exception) {
-      setErrorMessage(exception.message);
-      setErrorType('error');
-      setTimeout(() => {
-        setErrorMessage(null);
-        setErrorType(null);
-      }, 5000);
+      dispatch(setNotification(exception.message, 'error', 5));
     }
   };
 
@@ -97,19 +85,9 @@ const App = () => {
         blog.id !== updatedBlog.id ? blog : updatedBlogResponse
       ));
       setBlogs(updatedBlogs);
-      setErrorMessage('Blog updated successfully');
-      setErrorType('success');
-      setTimeout(() => {
-        setErrorMessage(null);
-        setErrorType(null);
-      }, 5000);
+      dispatch(setNotification('Blog updated successfully', 'success', 5));
     } catch (exception) {
-      setErrorMessage(exception.message);
-      setErrorType('error');
-      setTimeout(() => {
-        setErrorMessage(null);
-        setErrorType(null);
-      }, 5000);
+      dispatch(setNotification(exception.message, 'error', 5));
     }
   };
 
@@ -125,20 +103,10 @@ const App = () => {
           (blog) => blog.id !== blogToDelete.id,
         );
         setBlogs(updatedBlogs);
-        setErrorMessage(`${blogToDelete.title} was deleted successfully.`);
-        setErrorType('success');
-        setTimeout(() => {
-          setErrorMessage(null);
-          setErrorType(null);
-        }, 5000);
+        dispatch(setNotification(`${blogToDelete.title} was deleted successfully.`, 'success', 5));
       }
     } catch (exception) {
-      setErrorMessage(exception.message);
-      setErrorType('error');
-      setTimeout(() => {
-        setErrorMessage(null);
-        setErrorType(null);
-      }, 5000);
+      dispatch(setNotification(exception.message, 'error', 5));
     }
   };
 
@@ -150,9 +118,9 @@ const App = () => {
   return (
     <div>
       {/* A basic way to show notifications instead of creating a separate module */}
-      <div className={errorType}>
+      <div className={notifications.type}>
         {' '}
-        {errorMessage}
+        {notifications.message}
         {' '}
       </div>
 
