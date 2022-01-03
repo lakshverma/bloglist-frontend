@@ -11,14 +11,17 @@ import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import { setNotification } from './reducer/notificationReducer';
+import {
+  initializeBlogs, createBlogAction, addLikes, deleteBlog,
+} from './reducer/blogReducer';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
   const notifications = useSelector((state) => state.notifications);
+  const blogsStore = useSelector((state) => state.blogs);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,13 +35,10 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      blogService.getAll().then((blogs) => {
-        blogs.sort((a, b) => b.likes - a.likes);
-        setBlogs(blogs);
-      });
+      dispatch(initializeBlogs());
     }
     // console.log('get all effect hook run successfully');
-  }, [user]);
+  }, [user, dispatch]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -52,7 +52,6 @@ const App = () => {
 
       blogService.setToken(user.token);
       setUser(user);
-      // console.log('localStorage: ', window.localStorage);
       setUsername('');
       setPassword('');
       // console.log('Login successful!');
@@ -63,8 +62,7 @@ const App = () => {
 
   const createBlog = async (blogObject) => {
     try {
-      const newBlog = await blogService.create(blogObject);
-      setBlogs(blogs.concat(newBlog));
+      dispatch(createBlogAction(blogObject));
       dispatch(setNotification('New Blog added successfully!', 'success', 5));
     } catch (exception) {
       dispatch(setNotification(exception.message, 'error', 5));
@@ -72,19 +70,8 @@ const App = () => {
   };
 
   const handleUpdateBlog = async (blogToUpdate) => {
-    // console.log({ blogToUpdate });
-
-    const updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 };
-    // console.log({ updatedBlog });
-
     try {
-      const updatedBlogResponse = await blogService.update(updatedBlog);
-      // console.log({ updatedBlogResponse });
-
-      const updatedBlogs = blogs.map((blog) => (
-        blog.id !== updatedBlog.id ? blog : updatedBlogResponse
-      ));
-      setBlogs(updatedBlogs);
+      dispatch(addLikes(blogToUpdate));
       dispatch(setNotification('Blog updated successfully', 'success', 5));
     } catch (exception) {
       dispatch(setNotification(exception.message, 'error', 5));
@@ -92,18 +79,16 @@ const App = () => {
   };
 
   const handleDeleteBlog = async (blogToDelete) => {
-    // console.log({ blogToDelete });
-
     try {
+      // using confirm is not a good practice in general, this is just a temporary stop-gap solution
       // eslint-disable-next-line no-alert
       if (window.confirm(`Delete ${blogToDelete.title} ?`)) {
-        await blogService.deleteBlog(blogToDelete);
-
-        const updatedBlogs = blogs.filter(
-          (blog) => blog.id !== blogToDelete.id,
-        );
-        setBlogs(updatedBlogs);
-        dispatch(setNotification(`${blogToDelete.title} was deleted successfully.`, 'success', 5));
+        if (blogToDelete.user.username !== user.username) {
+          dispatch(setNotification('Can\'t delete blog created by another user', 'error', 5));
+        } else {
+          dispatch(deleteBlog(blogToDelete));
+          dispatch(setNotification(`${blogToDelete.title} was deleted successfully.`, 'success', 5));
+        }
       }
     } catch (exception) {
       dispatch(setNotification(exception.message, 'error', 5));
@@ -148,7 +133,7 @@ const App = () => {
           <Togglable buttonLabel="Create new blog">
             <BlogForm createBlog={createBlog} />
           </Togglable>
-          {blogs.map((blog) => (
+          {blogsStore.map((blog) => (
             <Blog
               key={blog.id}
               blog={blog}

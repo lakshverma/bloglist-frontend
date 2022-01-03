@@ -28,7 +28,6 @@ const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
     // if there is no user.
     // eslint-disable-next-line no-param-reassign
     blog.user = blog.user ? blog.user : 'none';
-    // console.log("name of the blog's user before return: ", blog.user.name)
     return (
       <div style={(showWhenVisible, blogStyle)} className="fullBlog">
         <div>

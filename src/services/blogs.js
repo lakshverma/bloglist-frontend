@@ -11,7 +11,6 @@ const getAll = async () => {
   const config = {
     headers: { Authorization: token },
   };
-  // console.log('config: ', config);
   const request = await axios.get(baseUrl, config);
   return request.data;
 };
@@ -29,7 +28,6 @@ const update = async (updatedBlog) => {
   const config = {
     headers: { Authorization: token },
   };
-  // console.log({updatedBlog})
   const request = await axios.put(`${baseUrl}/${updatedBlog.id}`, updatedBlog, config);
   return request.data;
 };
