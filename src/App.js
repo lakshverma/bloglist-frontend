@@ -4,54 +4,68 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  // eslint-disable-next-line no-unused-vars
+  Switch, Route, Link,
+} from 'react-router-dom';
+// components
+import Notification from './components/Notification';
+import User from './components/User';
 import Login from './components/Login';
 import Blog from './components/Blog';
 import BlogForm from './components/BlogForm';
 import Togglable from './components/Togglable';
+import UsersTable from './components/UsersTable';
+// services
 import blogService from './services/blogs';
 import loginService from './services/login';
+import usersService from './services/users';
+// reducers and action creators
 import { setNotification } from './reducer/notificationReducer';
 import {
   initializeBlogs, createBlogAction, addLikes, deleteBlog,
 } from './reducer/blogReducer';
+import { loginAction } from './reducer/userReducer';
+import { initializeUsers } from './reducer/usersReducer';
 
 const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
 
-  const notifications = useSelector((state) => state.notifications);
   const blogsStore = useSelector((state) => state.blogs);
+  const user = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+      const parsedUser = JSON.parse(loggedUserJSON);
+      dispatch(loginAction(parsedUser));
+      blogService.setToken(parsedUser.token);
     }
   }, []);
 
   useEffect(() => {
     if (user) {
       dispatch(initializeBlogs());
+      dispatch(initializeUsers());
     }
-    // console.log('get all effect hook run successfully');
   }, [user, dispatch]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const user = await loginService.login({
+      const loggedBlogappUser = await loginService.login({
         username,
         password,
       });
 
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(loggedBlogappUser));
 
-      blogService.setToken(user.token);
-      setUser(user);
+      blogService.setToken(loggedBlogappUser.token);
+      usersService.setToken(loggedBlogappUser.token);
+      dispatch(loginAction(loggedBlogappUser));
       setUsername('');
       setPassword('');
       // console.log('Login successful!');
@@ -95,55 +109,50 @@ const App = () => {
     }
   };
 
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogappUser');
-    // console.log('User successfully logged out');
-  };
-
   return (
     <div>
-      {/* A basic way to show notifications instead of creating a separate module */}
-      <div className={notifications.type}>
-        {' '}
-        {notifications.message}
-        {' '}
-      </div>
+      <Switch>
+        <Route path="/users">
+          <Notification />
+          <h2>blogs</h2>
+          <User />
+          <h2>Users</h2>
+          <UsersTable />
+        </Route>
+        <Route path="/">
+          <Notification />
+          {user === null ? (
+            <div>
+              <h2>Blogs - Login</h2>
+              <Login
+                handleLogin={handleLogin}
+                username={username}
+                password={password}
+                controlUsername={({ target }) => setUsername(target.value)}
+                controlPassword={({ target }) => setPassword(target.value)}
+              />
+            </div>
+          ) : (
+            <div>
+              <h2>Blogs - Homepage</h2>
+              <User />
+              <Togglable buttonLabel="Create new blog">
+                <BlogForm createBlog={createBlog} />
+              </Togglable>
+              {blogsStore.map((blog) => (
+                <Blog
+                  key={blog.id}
+                  blog={blog}
+                  handleUpdateBlog={handleUpdateBlog}
+                  handleDeleteBlog={handleDeleteBlog}
+                />
+              ))}
+              {/* {blogs.map((blog) => console.log("blog user inside App.js: ", blog.user))} */}
+            </div>
+          )}
 
-      {user === null ? (
-        <div>
-          <h2>Blogs - Login</h2>
-          <Login
-            handleLogin={handleLogin}
-            username={username}
-            password={password}
-            controlUsername={({ target }) => setUsername(target.value)}
-            controlPassword={({ target }) => setPassword(target.value)}
-          />
-        </div>
-      ) : (
-        <div>
-          <h2>Blogs - Homepage</h2>
-          <p>
-            {user.name}
-            {' '}
-            is logged in
-            {' '}
-          </p>
-          <button onClick={handleLogout}> Logout </button>
-          <Togglable buttonLabel="Create new blog">
-            <BlogForm createBlog={createBlog} />
-          </Togglable>
-          {blogsStore.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              handleUpdateBlog={handleUpdateBlog}
-              handleDeleteBlog={handleDeleteBlog}
-            />
-          ))}
-          {/* {blogs.map((blog) => console.log("blog user inside App.js: ", blog.user))} */}
-        </div>
-      )}
+        </Route>
+      </Switch>
     </div>
   );
 };

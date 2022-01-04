@@ -49,7 +49,11 @@ const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
         {/* Make sure to remove any test data from the db without user data
         or else this would break  */}
         {/* {console.log("name of the blog's user is: ", blog.user.name)} */}
-        <div>{blog.user.name}</div>
+        <div>
+          username is:
+          {' '}
+          {blog.user.name}
+        </div>
         <div>
           {' '}
           <button className="blog-remove-button" onClick={() => handleDeleteBlog(blog)}> remove </button>
