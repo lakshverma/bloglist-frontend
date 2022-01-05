@@ -3,6 +3,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
   // const [blogObject, setBlogObject] = useState(blog)
@@ -64,10 +65,12 @@ const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
   }
   return (
     <div style={(hideWhenVisible, blogStyle)}>
-      {blog.title}
-      {' '}
-      {blog.author}
-      {' '}
+      <Link to={`/blogs/${blog.id}`}>
+        {blog.title}
+        {' '}
+        {blog.author}
+        {' '}
+      </Link>
       <button className="view-full-blog" onClick={toggleVisibility}>view</button>
     </div>
   );

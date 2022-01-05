@@ -17,6 +17,7 @@ import BlogForm from './components/BlogForm';
 import Togglable from './components/Togglable';
 import User from './components/User';
 import UsersTable from './components/UsersTable';
+import BlogDetails from './components/BlogDetails';
 // services
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -113,6 +114,11 @@ const App = () => {
   return (
     <div>
       <Switch>
+        <Route path="/blogs/:id">
+          <Notification />
+          <LoggedUser />
+          <BlogDetails handleUpdateBlog={handleUpdateBlog} />
+        </Route>
         <Route path="/users/:id">
           <Notification />
           <LoggedUser />
