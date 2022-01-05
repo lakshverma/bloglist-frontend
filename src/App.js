@@ -10,11 +10,12 @@ import {
 } from 'react-router-dom';
 // components
 import Notification from './components/Notification';
-import User from './components/User';
+import LoggedUser from './components/LoggedUser';
 import Login from './components/Login';
 import Blog from './components/Blog';
 import BlogForm from './components/BlogForm';
 import Togglable from './components/Togglable';
+import User from './components/User';
 import UsersTable from './components/UsersTable';
 // services
 import blogService from './services/blogs';
@@ -112,10 +113,15 @@ const App = () => {
   return (
     <div>
       <Switch>
+        <Route path="/users/:id">
+          <Notification />
+          <LoggedUser />
+          <User />
+        </Route>
         <Route path="/users">
           <Notification />
           <h2>blogs</h2>
-          <User />
+          <LoggedUser />
           <h2>Users</h2>
           <UsersTable />
         </Route>
@@ -135,7 +141,7 @@ const App = () => {
           ) : (
             <div>
               <h2>Blogs - Homepage</h2>
-              <User />
+              <LoggedUser />
               <Togglable buttonLabel="Create new blog">
                 <BlogForm createBlog={createBlog} />
               </Togglable>
