@@ -4,6 +4,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import Comments from './Comments';
 
 const BlogDetails = ({ handleUpdateBlog }) => {
   const blogs = useSelector((state) => state.blogs);
@@ -40,6 +41,7 @@ const BlogDetails = ({ handleUpdateBlog }) => {
         {blog.user.name}
         {' '}
       </p>
+      <Comments blogId={id} />
     </div>
   );
 };

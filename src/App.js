@@ -4,10 +4,7 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  // eslint-disable-next-line no-unused-vars
-  Switch, Route, Link,
-} from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 // components
 import Notification from './components/Notification';
 import Login from './components/Login';
@@ -113,27 +110,24 @@ const App = () => {
 
   return (
     <div>
+      <Notification />
       <NavBar />
       <Switch>
         <Route path="/blogs/:id">
-          <Notification />
           {/* <LoggedUser /> */}
           <BlogDetails handleUpdateBlog={handleUpdateBlog} />
         </Route>
         <Route path="/users/:id">
-          <Notification />
           {/* <LoggedUser /> */}
           <User />
         </Route>
         <Route path="/users">
-          <Notification />
           {/* <h2>blogs</h2> */}
           {/* <LoggedUser /> */}
           <h2>Users</h2>
           <UsersTable />
         </Route>
         <Route path="/">
-          <Notification />
           {user === null ? (
             <div>
               <h2>Blogs - Login</h2>
