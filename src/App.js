@@ -4,7 +4,7 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 // components
 import Notification from './components/Notification';
 import Login from './components/Login';
@@ -114,18 +114,20 @@ const App = () => {
       <NavBar />
       <Switch>
         <Route path="/blogs/:id">
-          {/* <LoggedUser /> */}
-          <BlogDetails handleUpdateBlog={handleUpdateBlog} />
+          {user ? <BlogDetails handleUpdateBlog={handleUpdateBlog} /> : <Redirect to="/" />}
         </Route>
         <Route path="/users/:id">
-          {/* <LoggedUser /> */}
-          <User />
+          {user ? <User /> : <Redirect to="/" />}
         </Route>
         <Route path="/users">
-          {/* <h2>blogs</h2> */}
-          {/* <LoggedUser /> */}
-          <h2>Users</h2>
-          <UsersTable />
+          {user
+            ? (
+              <div>
+                <h2>Users</h2>
+                <UsersTable />
+              </div>
+            )
+            : <Redirect to="/" />}
         </Route>
         <Route path="/">
           {user === null ? (
