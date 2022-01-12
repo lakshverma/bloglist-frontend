@@ -19,27 +19,32 @@ const BlogDetails = ({ handleUpdateBlog }) => {
   // eslint-disable-next-line no-param-reassign
   blog.user = blog.user ? blog.user : 'none';
   return (
-    <div>
-      <h2>
+    <div className="mx-24 space-y-4">
+      <h2 className="text-6xl text-neutral-700 font-bold mt-8 mb-8">
         {blog.title}
-        {' '}
+        {' | '}
         {blog.author}
       </h2>
-      <p>{blog.url}</p>
+      <p className="underline">{blog.url}</p>
       <div>
         {blog.likes}
         {' '}
         likes
         {' '}
-        <button type="button" className="blog-like-button" onClick={() => handleUpdateBlog(blog)}>
+        <button
+          type="button"
+          className="bg-lime-800 hover:bg-lime-700 rounded text-lime-50 font-bold p-1 pl-4 pr-4 blog-like-button"
+          onClick={() => handleUpdateBlog(blog)}
+        >
           like
         </button>
       </div>
       <p>
         added by
         {' '}
-        {blog.user.name}
-        {' '}
+        <span className="text-green-900 font-bold italic">
+          {blog.user.name}
+        </span>
       </p>
       <Comments blogId={id} />
     </div>

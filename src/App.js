@@ -69,7 +69,7 @@ const App = () => {
       setPassword('');
       // console.log('Login successful!');
     } catch (exception) {
-      dispatch(setNotification('Wrong credentials', 'error', 5));
+      dispatch(setNotification('Wrong credentials. Please try again.', 'error', 5));
     }
   };
 
@@ -109,7 +109,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="bg-lime-50 min-h-screen">
       <Notification />
       <NavBar />
       <Switch>
@@ -122,8 +122,8 @@ const App = () => {
         <Route path="/users">
           {user
             ? (
-              <div>
-                <h2>Users</h2>
+              <div className="ml-24 mr-24">
+                <h2 className="text-6xl text-neutral-700 font-bold mt-8 mb-8">Users</h2>
                 <UsersTable />
               </div>
             )
@@ -131,8 +131,8 @@ const App = () => {
         </Route>
         <Route path="/">
           {user === null ? (
-            <div>
-              <h2>Blogs - Login</h2>
+            <div className="mx-24 py-8 text-center">
+              <h2 className="text-6xl text-neutral-700 font-bold mb-8">Blogs - Login</h2>
               <Login
                 handleLogin={handleLogin}
                 username={username}
@@ -142,8 +142,8 @@ const App = () => {
               />
             </div>
           ) : (
-            <div>
-              <h2>Blogs - Homepage</h2>
+            <div className="">
+              <h2 className="text-6xl text-neutral-700 mt-4 mb-4 ml-24 pt-2 pb-2 font-bold">Blogs - Homepage</h2>
               <Togglable buttonLabel="Create new blog">
                 <BlogForm createBlog={createBlog} />
               </Togglable>

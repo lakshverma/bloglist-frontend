@@ -25,50 +25,59 @@ const BlogForm = ({ createBlog }) => {
   };
 
   return (
-    <form onSubmit={addBlog} className="blogForm">
+    <form onSubmit={addBlog} className="text-neutral-700 blogForm">
       <div>
-        <h2> create new </h2>
+        <h2 className="font-bold text-2xl mt-4 mb-4"> Create New </h2>
         <div>
-          {' '}
-          title
-          {' '}
+          <div>
+            title
+          </div>
           <input
             id="title"
             type="text"
             value={title}
             name="title"
             onChange={controlTitle}
+            className="bg-gray-50 mb-2 rounded outline outline-2 outline-gray-300 focus:outline-lime-700"
           />
           {' '}
         </div>
         <div>
-          {' '}
-          author
-          {' '}
+          <div>
+            author
+          </div>
           <input
             id="author"
             type="text"
             value={author}
             name="author"
             onChange={controlAuthor}
+            className="bg-gray-50 mb-2 rounded outline outline-2 outline-gray-300 focus:outline-lime-700"
           />
           {' '}
         </div>
         <div>
-          {' '}
-          url
-          {' '}
+          <div>
+            url
+          </div>
           <input
             id="url"
             type="text"
             value={url}
             name="url"
             onChange={controlUrl}
+            className="bg-gray-50 rounded outline outline-2 outline-gray-300 focus:outline-lime-700"
           />
           {' '}
         </div>
       </div>
-      <button id="create-blog-button" type="submit">create</button>
+      <button
+        id="create-blog-button"
+        type="submit"
+        className="bg-lime-800 hover:bg-lime-700 rounded text-lime-50 font-bold p-2 pl-4 pr-4 mt-4 mb-4"
+      >
+        create
+      </button>
     </form>
   );
 };

@@ -8,9 +8,8 @@ const User = () => {
   const users = useSelector((state) => state.users);
   const blogs = useSelector((state) => state.blogs);
   const { id } = useParams();
-  //   console.log(id);
   const user = users.find((n) => n.id === id);
-  //   console.log(user);
+
   if (!user) {
     return null;
   }
@@ -22,11 +21,23 @@ const User = () => {
     return [];
   });
 
+  //   console.log(userBlogs);
+  if (userBlogs.length === 0) {
+    return (
+      <div className="mx-24">
+        <h2 className="text-6xl text-neutral-700 font-bold mt-8 mb-8">{user.name}</h2>
+        <p>No blogs added yet.</p>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      {userBlogs.map((blog) => <li key={blog.id}>{blog.title}</li>)}
+    <div className="mx-24">
+      <h2 className="text-6xl text-neutral-700 font-bold mt-8 mb-8">{user.name}</h2>
+      <h3 className="text-3xl text-neutral-700">added blogs</h3>
+      <ol>
+        {userBlogs.map((blog) => <li key={blog.id} className="list-decimal py-2 pl-4">{blog.title}</li>)}
+      </ol>
     </div>
   );
 };

@@ -64,14 +64,18 @@ const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
     );
   }
   return (
-    <div style={(hideWhenVisible, blogStyle)}>
-      <Link to={`/blogs/${blog.id}`}>
-        {blog.title}
-        {' '}
-        {blog.author}
-        {' '}
-      </Link>
-      <button className="view-full-blog" onClick={toggleVisibility}>view</button>
+    <div style={(hideWhenVisible)} className="flex items-center justify-between bg-lime-100 mt-2 mr-24 mb-2 ml-24 p-2">
+      <div className="hover:underline">
+        <Link to={`/blogs/${blog.id}`}>
+          {blog.title}
+          {' | '}
+          {blog.author}
+          {' '}
+        </Link>
+      </div>
+      {/* This feature has been disabled on the UI since
+      it has been made redundant by the blog view. */}
+      <button className="hidden bg-lime-700 rounded hover:bg-lime-800 p-1 pr-4 pl-4 ml-4 text-lime-50 left-0 font-bold hover:text-lime-100 view-full-blog" onClick={toggleVisibility}>view</button>
     </div>
   );
 };

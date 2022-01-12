@@ -1,4 +1,8 @@
-.error {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .error {
   color: #a94442;
   background-color: #f2dede;
   border-color: #ebccd1;
@@ -26,4 +30,4 @@ h2 {
 
 div {
   margin-bottom: 0.25rem;
-}
+} */

@@ -31,18 +31,27 @@ const Comments = ({ blogId }) => {
 
   return (
     <div>
-      <h3>
+      <h3 className="text-2xl text-neutral-700 font-bold mt-8 mb-4">
         comments
       </h3>
       <form onSubmit={createComment} className="commentForm">
         <input
           id="comment-input"
+          placeholder="share your thoughts"
           type="text"
           value={content}
           name="comment"
           onChange={controlComment}
+          className="box-border w-1/6 min-w-fit px-1 bg-gray-50 mb-2 rounded outline outline-2 outline-gray-300 focus:outline-lime-700"
         />
-        <button id="create-comment-button" type="submit">add comment</button>
+        <button
+        //   id="create-comment-button"
+          className="block bg-lime-800 hover:bg-lime-700 rounded text-lime-50 font-bold p-2 pl-4 pr-4 my-4"
+          type="submit"
+        >
+          add comment
+
+        </button>
       </form>
       {comments.map((comment) => (
         <li key={comment.id}>
